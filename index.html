@@ -22,7 +22,7 @@
             ink: "#172033",
             muted: "#667085",
             soft: "#F6F8FC",
-            primary: "#6C63FF",
+            primary: "#4F46E5",
             purple: "#8B7CFF",
           }
         }
@@ -34,8 +34,8 @@
     * { box-sizing: border-box; }
     body { font-family: "DM Sans", sans-serif; }
     .heading { font-family: "Plus Jakarta Sans", sans-serif; }
-    .tab-active { color: #6C63FF; background: #EEECFF; }
-    .tab-active .tab-icon { background: #6C63FF; color: white; }
+    .tab-active { color: #4F46E5; background: #EEECFF; }
+    .tab-active .tab-icon { background: #4F46E5; color: white; }
     .modal-backdrop { background: rgba(23, 32, 51, 0.45); backdrop-filter: blur(4px); }
     .modal-hidden { display: none; }
     .panel-hidden { display: none; }
@@ -57,7 +57,7 @@
           <p class="mt-1 text-sm text-muted">Expense Tracker · Bookmark Manager · Quiz App</p>
         </div>
         <div class="hidden rounded-2xl bg-indigo-50 px-4 py-3 text-right sm:block">
-          <p class="text-xs font-semibold uppercase tracking-wider text-indigo-500">P3</p>
+          <p class="text-xs font-semibold uppercase tracking-wider text-indigo-700">P3</p>
           <p class="text-sm font-semibold text-indigo-900">DOM + Event + localStorage</p>
         </div>
       </div>
@@ -149,7 +149,7 @@
                 <label for="expense-date" class="mb-1.5 block text-sm font-semibold">Tanggal</label>
                 <input id="expense-date" required type="date" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
               </div>
-              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600" type="submit">
+              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-700" type="submit">
                 <i class="ti ti-plus mr-1"></i> Tambah Transaksi
               </button>
             </div>
@@ -162,13 +162,13 @@
                 <p id="expense-count" class="mt-1 text-sm text-muted">0 transaksi</p>
               </div>
               <div class="flex flex-col gap-2 sm:flex-row">
-                <input id="expense-search" type="search" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul...">
-                <select id="expense-filter-type" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                <input id="expense-search" type="search" aria-label="Cari transaksi berdasarkan judul" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul...">
+                <select id="expense-filter-type" aria-label="Filter berdasarkan tipe transaksi" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
                   <option value="all">Semua tipe</option>
                   <option value="Pemasukan">Pemasukan</option>
                   <option value="Pengeluaran">Pengeluaran</option>
                 </select>
-                <select id="expense-sort" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                <select id="expense-sort" aria-label="Urutkan transaksi" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
                   <option value="newest">Terbaru</option>
                   <option value="oldest">Terlama</option>
                   <option value="highest">Jumlah terbesar</option>
@@ -211,7 +211,7 @@
                 <label for="bookmark-note" class="mb-1.5 block text-sm font-semibold">Catatan <span class="font-normal text-muted">(opsional)</span></label>
                 <textarea id="bookmark-note" rows="3" class="w-full resize-none rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="Catatan singkat..."></textarea>
               </div>
-              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600" type="submit">
+              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-700" type="submit">
                 <i class="ti ti-bookmark-plus mr-1"></i> Simpan Bookmark
               </button>
             </div>
@@ -224,8 +224,8 @@
                 <p id="bookmark-count" class="mt-1 text-sm text-muted">0 bookmark</p>
               </div>
               <div class="flex flex-col gap-2 sm:flex-row">
-                <input id="bookmark-search" type="search" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul, URL, kategori...">
-                <select id="bookmark-sort" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                <input id="bookmark-search" type="search" aria-label="Cari bookmark berdasarkan judul, URL, atau kategori" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul, URL, kategori...">
+                <select id="bookmark-sort" aria-label="Urutkan bookmark" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
                   <option value="newest">Terbaru</option>
                   <option value="az">Judul A–Z</option>
                   <option value="za">Judul Z–A</option>
@@ -252,7 +252,7 @@
             <h3 class="heading mt-5 text-2xl font-extrabold">Siap menguji JavaScript?</h3>
             <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-muted">Jawab 5 soal tentang konsep dasar JavaScript. Setiap jawaban bernilai 1 poin.</p>
             <p class="mt-4 text-sm font-bold text-indigo-600">High Score: <span id="start-high-score">0</span>/5</p>
-            <button id="start-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">
+            <button id="start-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-700" type="button">
               Mulai Kuis
             </button>
           </div>
@@ -270,7 +270,7 @@
               <h3 id="quiz-question" class="heading text-xl font-extrabold leading-8"></h3>
               <div id="quiz-options" class="mt-6 grid gap-3"></div>
               <p id="quiz-feedback" class="mt-4 min-h-6 text-sm font-semibold"></p>
-              <button id="quiz-next" class="mt-4 hidden w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">Soal Berikutnya</button>
+              <button id="quiz-next" class="mt-4 hidden w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-indigo-700" type="button">Soal Berikutnya</button>
             </div>
           </div>
 
@@ -282,7 +282,7 @@
             <p class="mt-2 text-sm text-muted">Skor kamu</p>
             <p id="quiz-final-score" class="mt-1 text-5xl font-extrabold text-primary">0/5</p>
             <p class="mt-4 text-sm font-semibold text-indigo-700">High Score: <span id="final-high-score">0</span>/5</p>
-            <button id="restart-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">Ulangi Kuis</button>
+            <button id="restart-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-700" type="button">Ulangi Kuis</button>
           </div>
         </div>
       </section>
@@ -304,6 +304,6 @@
     </div>
   </div>
 
-  <script src="assets/script.js"></script>
+  <script src="/assets/script.js"></script>
 </body>
 </html>

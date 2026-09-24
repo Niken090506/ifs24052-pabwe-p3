@@ -272,28 +272,28 @@ function openExpenseEdit(id) {
     content: `
       <form id="edit-expense-form" class="space-y-4">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Judul</label>
+          <label for="edit-expense-title" class="mb-1.5 block text-sm font-semibold">Judul</label>
           <input id="edit-expense-title" value="${escapeHTML(item.title)}" required class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Kategori</label>
+          <label for="edit-expense-category" class="mb-1.5 block text-sm font-semibold">Kategori</label>
           <select id="edit-expense-category" required class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
             ${["Makanan", "Transportasi", "Kuliah", "Belanja", "Hiburan", "Lainnya"].map(category => `<option ${category === item.category ? "selected" : ""}>${category}</option>`).join("")}
           </select>
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Jumlah</label>
+          <label for="edit-expense-amount" class="mb-1.5 block text-sm font-semibold">Jumlah</label>
           <input id="edit-expense-amount" value="${item.amount}" min="1" required type="number" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Tipe</label>
+          <label for="edit-expense-type" class="mb-1.5 block text-sm font-semibold">Tipe</label>
           <select id="edit-expense-type" required class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
             <option ${item.type === "Pengeluaran" ? "selected" : ""}>Pengeluaran</option>
             <option ${item.type === "Pemasukan" ? "selected" : ""}>Pemasukan</option>
           </select>
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Tanggal</label>
+          <label for="edit-expense-date" class="mb-1.5 block text-sm font-semibold">Tanggal</label>
           <input id="edit-expense-date" value="${item.date}" required type="date" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div class="flex gap-2 pt-2">
@@ -458,19 +458,19 @@ function openBookmarkEdit(id) {
     content: `
       <form id="edit-bookmark-form" class="space-y-4">
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Judul</label>
+          <label for="edit-bookmark-title" class="mb-1.5 block text-sm font-semibold">Judul</label>
           <input id="edit-bookmark-title" value="${escapeHTML(item.title)}" required class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">URL</label>
+          <label for="edit-bookmark-url" class="mb-1.5 block text-sm font-semibold">URL</label>
           <input id="edit-bookmark-url" value="${escapeHTML(item.url)}" required class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Kategori</label>
+          <label for="edit-bookmark-category" class="mb-1.5 block text-sm font-semibold">Kategori</label>
           <input id="edit-bookmark-category" value="${escapeHTML(item.category)}" required class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
         </div>
         <div>
-          <label class="mb-1.5 block text-sm font-semibold">Catatan</label>
+          <label for="edit-bookmark-note" class="mb-1.5 block text-sm font-semibold">Catatan</label>
           <textarea id="edit-bookmark-note" rows="3" class="w-full resize-none rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">${escapeHTML(item.note)}</textarea>
         </div>
         <div class="flex gap-2 pt-2">
