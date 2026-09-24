@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyHub — JavaScript Practicum 3</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["DM Sans", "sans-serif"],
+          },
+          colors: {
+            ink: "#172033",
+            muted: "#667085",
+            soft: "#F6F8FC",
+            primary: "#6C63FF",
+            purple: "#8B7CFF",
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: "DM Sans", sans-serif; }
+    .heading { font-family: "Plus Jakarta Sans", sans-serif; }
+    .tab-active { color: #6C63FF; background: #EEECFF; }
+    .tab-active .tab-icon { background: #6C63FF; color: white; }
+    .modal-backdrop { background: rgba(23, 32, 51, 0.45); backdrop-filter: blur(4px); }
+    .modal-hidden { display: none; }
+    .panel-hidden { display: none; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #8B7CFF;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-ink">
+  <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <header class="border-b border-slate-200/80 bg-white/85 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
+        <div>
+          <p class="mb-1 text-sm font-semibold text-primary">Praktikum JavaScript</p>
+          <h1 class="heading text-2xl font-extrabold tracking-tight sm:text-3xl">StudyHub</h1>
+          <p class="mt-1 text-sm text-muted">Expense Tracker · Bookmark Manager · Quiz App</p>
+        </div>
+        <div class="hidden rounded-2xl bg-indigo-50 px-4 py-3 text-right sm:block">
+          <p class="text-xs font-semibold uppercase tracking-wider text-indigo-500">P3</p>
+          <p class="text-sm font-semibold text-indigo-900">DOM + Event + localStorage</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <nav class="mb-6 grid grid-cols-3 gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm" aria-label="Navigasi fitur">
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-bold transition hover:bg-slate-50" data-tab="expense" type="button">
+          <span class="tab-icon flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><i class="ti ti-wallet"></i></span>
+          <span>Expense</span>
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-bold transition hover:bg-slate-50" data-tab="bookmark" type="button">
+          <span class="tab-icon flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><i class="ti ti-bookmarks"></i></span>
+          <span>Bookmark</span>
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-bold transition hover:bg-slate-50" data-tab="quiz" type="button">
+          <span class="tab-icon flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600"><i class="ti ti-bulb"></i></span>
+          <span>Quiz</span>
+        </button>
+      </nav>
+
+      <section id="expense-panel" class="tab-panel">
+        <div class="mb-6">
+          <p class="text-sm font-semibold text-primary">01 · Expense Tracker</p>
+          <h2 class="heading mt-1 text-2xl font-extrabold sm:text-3xl">Catatan Pengeluaran Harian</h2>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-muted">Kelola pemasukan dan pengeluaran dengan CRUD, pencarian, filter, sorting, validasi, dan penyimpanan browser.</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-emerald-700">Pemasukan</p>
+              <i class="ti ti-trending-up text-xl text-emerald-600"></i>
+            </div>
+            <p id="income-total" class="mt-3 text-2xl font-extrabold text-emerald-900">Rp0</p>
+          </div>
+          <div class="rounded-2xl border border-rose-100 bg-rose-50 p-5">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-rose-700">Pengeluaran</p>
+              <i class="ti ti-trending-down text-xl text-rose-600"></i>
+            </div>
+            <p id="expense-total" class="mt-3 text-2xl font-extrabold text-rose-900">Rp0</p>
+          </div>
+          <div class="rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-indigo-700">Saldo</p>
+              <i class="ti ti-wallet text-xl text-indigo-600"></i>
+            </div>
+            <p id="balance-total" class="mt-3 text-2xl font-extrabold text-indigo-900">Rp0</p>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-[360px_1fr]">
+          <form id="expense-form" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-5">
+              <h3 class="heading text-lg font-bold">Tambah Transaksi</h3>
+              <p class="mt-1 text-sm text-muted">Isi semua field wajib.</p>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label for="expense-title" class="mb-1.5 block text-sm font-semibold">Judul</label>
+                <input id="expense-title" required type="text" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="Contoh: Makan siang">
+              </div>
+              <div>
+                <label for="expense-category" class="mb-1.5 block text-sm font-semibold">Kategori</label>
+                <select id="expense-category" required class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
+                  <option value="">Pilih kategori</option>
+                  <option>Makanan</option>
+                  <option>Transportasi</option>
+                  <option>Kuliah</option>
+                  <option>Belanja</option>
+                  <option>Hiburan</option>
+                  <option>Lainnya</option>
+                </select>
+              </div>
+              <div>
+                <label for="expense-amount" class="mb-1.5 block text-sm font-semibold">Jumlah</label>
+                <input id="expense-amount" required min="1" step="1" type="number" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="50000">
+              </div>
+              <div>
+                <label for="expense-type" class="mb-1.5 block text-sm font-semibold">Tipe</label>
+                <select id="expense-type" required class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm">
+                  <option value="Pengeluaran">Pengeluaran</option>
+                  <option value="Pemasukan">Pemasukan</option>
+                </select>
+              </div>
+              <div>
+                <label for="expense-date" class="mb-1.5 block text-sm font-semibold">Tanggal</label>
+                <input id="expense-date" required type="date" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm">
+              </div>
+              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600" type="submit">
+                <i class="ti ti-plus mr-1"></i> Tambah Transaksi
+              </button>
+            </div>
+          </form>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 class="heading text-lg font-bold">Daftar Transaksi</h3>
+                <p id="expense-count" class="mt-1 text-sm text-muted">0 transaksi</p>
+              </div>
+              <div class="flex flex-col gap-2 sm:flex-row">
+                <input id="expense-search" type="search" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul...">
+                <select id="expense-filter-type" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                  <option value="all">Semua tipe</option>
+                  <option value="Pemasukan">Pemasukan</option>
+                  <option value="Pengeluaran">Pengeluaran</option>
+                </select>
+                <select id="expense-sort" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                  <option value="newest">Terbaru</option>
+                  <option value="oldest">Terlama</option>
+                  <option value="highest">Jumlah terbesar</option>
+                  <option value="lowest">Jumlah terkecil</option>
+                </select>
+              </div>
+            </div>
+            <div id="expense-list" class="mt-5 space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="bookmark-panel" class="tab-panel panel-hidden">
+        <div class="mb-6">
+          <p class="text-sm font-semibold text-primary">02 · Bookmark Manager</p>
+          <h2 class="heading mt-1 text-2xl font-extrabold sm:text-3xl">Simpan Link Favorit</h2>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-muted">Simpan website berdasarkan kategori, validasi URL, cari, sort, ubah, hapus, dan buka link di tab baru.</p>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-[360px_1fr]">
+          <form id="bookmark-form" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-5">
+              <h3 class="heading text-lg font-bold">Tambah Bookmark</h3>
+              <p class="mt-1 text-sm text-muted">URL harus diawali http:// atau https://.</p>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label for="bookmark-title" class="mb-1.5 block text-sm font-semibold">Judul</label>
+                <input id="bookmark-title" required type="text" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="W3Schools">
+              </div>
+              <div>
+                <label for="bookmark-url" class="mb-1.5 block text-sm font-semibold">URL</label>
+                <input id="bookmark-url" required type="url" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="https://www.w3schools.com">
+              </div>
+              <div>
+                <label for="bookmark-category" class="mb-1.5 block text-sm font-semibold">Kategori</label>
+                <input id="bookmark-category" required type="text" class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="Belajar">
+              </div>
+              <div>
+                <label for="bookmark-note" class="mb-1.5 block text-sm font-semibold">Catatan <span class="font-normal text-muted">(opsional)</span></label>
+                <textarea id="bookmark-note" rows="3" class="w-full resize-none rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm" placeholder="Catatan singkat..."></textarea>
+              </div>
+              <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600" type="submit">
+                <i class="ti ti-bookmark-plus mr-1"></i> Simpan Bookmark
+              </button>
+            </div>
+          </form>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 class="heading text-lg font-bold">Daftar Bookmark</h3>
+                <p id="bookmark-count" class="mt-1 text-sm text-muted">0 bookmark</p>
+              </div>
+              <div class="flex flex-col gap-2 sm:flex-row">
+                <input id="bookmark-search" type="search" class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm" placeholder="Cari judul, URL, kategori...">
+                <select id="bookmark-sort" class="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm">
+                  <option value="newest">Terbaru</option>
+                  <option value="az">Judul A–Z</option>
+                  <option value="za">Judul Z–A</option>
+                </select>
+              </div>
+            </div>
+            <div id="bookmark-list" class="mt-5 space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz-panel" class="tab-panel panel-hidden">
+        <div class="mb-6">
+          <p class="text-sm font-semibold text-primary">03 · Quiz App</p>
+          <h2 class="heading mt-1 text-2xl font-extrabold sm:text-3xl">JavaScript Mini Quiz</h2>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-muted">Soal dibuat dari array of object, dirender melalui DOM, memiliki feedback, skor akhir, dan high score.</p>
+        </div>
+
+        <div class="mx-auto max-w-3xl">
+          <div id="quiz-start" class="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50 text-3xl text-primary">
+              <i class="ti ti-brain"></i>
+            </div>
+            <h3 class="heading mt-5 text-2xl font-extrabold">Siap menguji JavaScript?</h3>
+            <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-muted">Jawab 5 soal tentang konsep dasar JavaScript. Setiap jawaban bernilai 1 poin.</p>
+            <p class="mt-4 text-sm font-bold text-indigo-600">High Score: <span id="start-high-score">0</span>/5</p>
+            <button id="start-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">
+              Mulai Kuis
+            </button>
+          </div>
+
+          <div id="quiz-game" class="panel-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div class="flex items-center justify-between gap-4">
+              <span id="quiz-progress" class="text-sm font-bold text-primary">Soal 1/5</span>
+              <span id="quiz-score" class="rounded-full bg-indigo-50 px-3 py-1.5 text-sm font-bold text-indigo-700">Skor: 0</span>
+            </div>
+            <div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-100">
+              <div id="quiz-progress-bar" class="h-full rounded-full bg-primary transition-all" style="width: 20%"></div>
+            </div>
+
+            <div class="mt-8">
+              <h3 id="quiz-question" class="heading text-xl font-extrabold leading-8"></h3>
+              <div id="quiz-options" class="mt-6 grid gap-3"></div>
+              <p id="quiz-feedback" class="mt-4 min-h-6 text-sm font-semibold"></p>
+              <button id="quiz-next" class="mt-4 hidden w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">Soal Berikutnya</button>
+            </div>
+          </div>
+
+          <div id="quiz-result" class="panel-hidden rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-3xl text-emerald-600">
+              <i class="ti ti-trophy"></i>
+            </div>
+            <h3 class="heading mt-5 text-2xl font-extrabold">Kuis Selesai!</h3>
+            <p class="mt-2 text-sm text-muted">Skor kamu</p>
+            <p id="quiz-final-score" class="mt-1 text-5xl font-extrabold text-primary">0/5</p>
+            <p class="mt-4 text-sm font-semibold text-indigo-700">High Score: <span id="final-high-score">0</span>/5</p>
+            <button id="restart-quiz" class="mt-6 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white hover:bg-indigo-600" type="button">Ulangi Kuis</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal-hidden fixed inset-0 z-50 items-center justify-center p-4 modal-backdrop">
+    <div class="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p id="modal-kicker" class="text-sm font-semibold text-primary">Edit Data</p>
+          <h3 id="modal-title" class="heading mt-1 text-xl font-extrabold">Ubah item</h3>
+        </div>
+        <button id="modal-close" type="button" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200" aria-label="Tutup modal">
+          <i class="ti ti-x"></i>
+        </button>
+      </div>
+      <div id="modal-body" class="mt-5"></div>
+    </div>
+  </div>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
